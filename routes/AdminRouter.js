@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../db/userModel.js");
-const { JWT_SECRET, authMiddleware } = require("../middleware/authMiddleware");
+const { authMiddleware } = require("../middleware/authMiddleware");
+require("dotenv").config();
 
 // POST /admin/login
 router.post("/login", async function (request, response) {
@@ -25,7 +26,7 @@ router.post("/login", async function (request, response) {
     }
 
     // Create JWT token
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "24h",
     });
 

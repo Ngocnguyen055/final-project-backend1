@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-const JWT_SECRET = process.env.JWT_SECRET || "photo_sharing_secret_key_2024";
+
 
 function authMiddleware(request, response, next) {
   const authHeader = request.headers.authorization;
@@ -12,7 +13,7 @@ function authMiddleware(request, response, next) {
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     request.userId = decoded.userId;
     next();
   } catch (error) {
@@ -20,4 +21,4 @@ function authMiddleware(request, response, next) {
   }
 }
 
-module.exports = { authMiddleware, JWT_SECRET };
+module.exports = { authMiddleware };
